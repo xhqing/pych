@@ -1,5 +1,8 @@
-import re
+"""
+ref: https://clickhouse-driver.readthedocs.io/en/latest/quickstart.html
+"""
 
+import re
 import pandas as pd
 from clickhouse_driver import Client
 
@@ -28,6 +31,7 @@ class PyCH:
         )
 
     def get_pandasDataFrame(self, sql: str) -> pd.DataFrame:
+        """get clickhouse data as pandasDataFrame"""
 
         data, columns = self.client.execute(sql, columnar=True, with_column_types=True)
         pandasDataFrame = pd.DataFrame(
@@ -35,3 +39,13 @@ class PyCH:
         )
 
         return pandasDataFrame
+
+    def write_pandasDataFrame(self, df: pd.DataFrame, tablename: str):
+        """write pandasDataFrame data to clickhouse"""
+
+        records = df.to_dict("records")
+        cols = ",".join(df.columns.tolist())
+        self.client.execute(f"INSERT INTO {tablename} ({cols}) VALUES", records, types_check=True)
+
+
+
