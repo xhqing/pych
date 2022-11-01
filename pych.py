@@ -11,7 +11,7 @@ class PyCH:
     """python connect clickhouse"""
 
     def __init__(
-        self, host, dbname, username, password, port, send_receive_timeout=2000
+        self, host, username, password, port, dbname, send_receive_timeout=2000
     ):
 
         self.host = host
